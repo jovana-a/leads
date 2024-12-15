@@ -119,8 +119,8 @@
             </select>
             <label for="notes">Notes:</label>
             <input type="text" id="notes" name="notes">
-            <label for="accountManager">Account Manager Contact:</label>
-            <input type="text" id="accountManager" name="accountManager" required>
+            <label for="brotherAccountManager">Brother Account Manager:</label>
+            <input type="text" id="brotherAccountManager" name="brotherAccountManager" required>
             <button type="button" onclick="saveLead()">Save Lead</button>
             <button type="button" onclick="newLead()">New Lead</button>
             <button type="button" onclick="searchLinkedIn()">Search LinkedIn</button>
@@ -147,7 +147,9 @@
             const leadForm = document.getElementById('leadForm');
             const event = leadForm.event.value === 'other' ? leadForm.eventOther.value : leadForm.event.value;
             const leadData = {
+                Number: leads.length + 1, // Add position number
                 Event: event,
+                Date: new Date().toLocaleDateString(), // Add date
                 Name: leadForm.name.value,
                 Surname: leadForm.surname.value,
                 Company: leadForm.company.value,
@@ -157,7 +159,8 @@
                 Interest: leadForm.interest.value,
                 GroupOfDevices: leadForm.groupOfDevices.value,
                 Notes: leadForm.notes.value,
-                AccountManager: leadForm.accountManager.value
+                BrotherAccountManager: leadForm.brotherAccountManager.value, // Updated field name
+                Time: new Date().toLocaleTimeString() // Add time
             };
 
             leads.push(leadData);
