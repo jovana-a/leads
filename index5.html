@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brother Lead Contact Form</title>
+    <style>
+        body {
+            background-image: url('background.jpg'); /* Add your background image URL here */
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+        .form-container img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: navy;
+        }
+        label {
+            color: green;
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
+            color: green; /* Green text */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: navy;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <img src="brother_logo.png" alt="Brother Logo"> <!-- Add your logo image path here -->
+        <h1>Brother Lead Contact Form</h1>
+        <form id="leadForm">
+            <label for="event">Event Name:</label>
+            <select id="event" name="event" required>
+                <option value="logimat">LogiMAT</option>
+                <option value="eurocis">EuroCIS</option>
+                <option value="logistics_summit">Logistics Summit</option>
+                <option value="dmea">DMEA</option>
+            </select>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="surname">Surname:</label>
+            <input type="text" id="surname" name="surname" required>
+            <label for="company">Company Name:</label>
+            <input type="text" id="company" name="company" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+            <label for="position">Position:</label>
+            <input type="text" id="position" name="position" required>
+            <label for="interest">Interest:</label>
+            <input type="text" id="interest" name="interest" required>
+            <label for="accountManager">Account Manager Contact:</label>
+            <input type="text" id="accountManager" name="accountManager" required>
+            <button type="button" onclick="saveLead()">Save Lead</button>
+            <button type="button" onclick="newLead()">New Lead</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script>
+        let leads = JSON.parse(localStorage.getItem('leads')) || [];
+
+        function saveLead() {
+            const leadForm = document.getElementById('leadForm');
+            const leadData = {
+                Event: leadForm.event.value,
+                Name: leadForm.name.value,
+                Surname: leadForm.surname.value,
+                Company: leadForm.company.value,
+                Email: leadForm.email.value,
+                Phone: leadForm.phone.value,
+                Position: leadForm.position.value,
+                Interest: leadForm.interest.value,
+                AccountManager: leadForm.accountManager.value
+            };
+
+            leads.push(leadData);
+            localStorage.setItem('leads', JSON.stringify(leads));
+
+            const ws = XLSX.utils.json_to_sheet(leads);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Leads");
+
+            XLSX.writeFile(wb, "leads.xlsx");
+        }
+
+        function newLead() {
+            document.getElementById('leadForm').reset();
+        }
+
+        window.onload = function() {
+            if (leads.length > 0) {
+                const continueLast = confirm("Do you want to continue from the last lead or start a new sheet?");
+                if (!continueLast) {
+                    leads = [];
+                    localStorage.removeItem('leads');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
