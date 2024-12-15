@@ -25,6 +25,8 @@
             text-align: center;
             width: 100%;
             max-width: 500px;
+            max-height: 90vh; /* Ensure the form fits within the viewport */
+            overflow-y: auto; /* Allow scrolling if content overflows */
             position: relative;
             box-sizing: border-box;
         }
@@ -61,6 +63,7 @@
             cursor: pointer;
             width: 100%; /* Ensure buttons are full width on small screens */
             box-sizing: border-box;
+            margin-bottom: 10px; /* Add space between buttons */
         }
         button:hover {
             background-color: darkblue;
