@@ -121,6 +121,13 @@
             </select>
             <label for="notes">Notes:</label>
             <input type="text" id="notes" name="notes">
+            <label for="priority">Priority:</label>
+            <select id="priority" name="priority" required>
+                <option value="urgent">Urgent</option>
+                <option value="hot">Hot</option>
+                <option value="warm">Warm</option>
+                <option value="cold">Cold</option>
+            </select>
             <button type="button" onclick="saveLead()">Save Lead</button>
             <button type="button" onclick="newLead()">New Lead</button>
             <button type="button" onclick="searchLinkedIn()">Search LinkedIn</button>
@@ -159,6 +166,7 @@
                 Interest: leadForm.interest.value,
                 GroupOfDevices: leadForm.groupOfDevices.value,
                 Notes: leadForm.notes.value,
+                Priority: leadForm.priority.value, // Add priority
                 BrotherAccountManager: leadForm.brotherAccountManager.value, // Updated field name
                 Time: new Date().toLocaleTimeString() // Add time
             };
