@@ -67,12 +67,14 @@
         <h1>Brother Lead Contact Form</h1>
         <form id="leadForm">
             <label for="event">Event Name:</label>
-            <select id="event" name="event" required>
+            <select id="event" name="event" onchange="toggleEventInput()" required>
                 <option value="logimat">LogiMAT</option>
                 <option value="eurocis">EuroCIS</option>
                 <option value="logistics_summit">Logistics Summit</option>
                 <option value="dmea">DMEA</option>
+                <option value="other">Other</option>
             </select>
+            <input type="text" id="eventOther" name="eventOther" placeholder="Enter event name" style="display:none;">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
             <label for="surname">Surname:</label>
@@ -87,10 +89,32 @@
             <input type="text" id="position" name="position" required>
             <label for="interest">Interest:</label>
             <input type="text" id="interest" name="interest" required>
+            <label for="groupOfDevices">Group of Devices:</label>
+            <select id="groupOfDevices" name="groupOfDevices" required>
+                <option value="mobile_printers">Mobile Printers</option>
+                <option value="desktop_label_printer_thermal">Desktop Label Printer Thermal</option>
+                <option value="desktop_label_printer_transfer">Desktop Label Printer Transfer</option>
+                <option value="industrial_label_printer">Industrial Label Printer</option>
+                <option value="ptouch">PTouch</option>
+                <option value="pj_printers">PJ Printers</option>
+                <option value="mfc_laser">MFC Laser</option>
+                <option value="mfc_ink_jet">MFC Ink Jet</option>
+                <option value="laser_printer_hl">Laser Printer HL</option>
+                <option value="dcp">DCP</option>
+                <option value="ausweissdrucker">Ausweissdrucker</option>
+                <option value="hak">HAK</option>
+                <option value="upgrades">Upgrades</option>
+                <option value="large_format">Large Format</option>
+                <option value="scanner">Scanner</option>
+                <option value="other">Other</option>
+            </select>
+            <label for="notes">Notes:</label>
+            <input type="text" id="notes" name="notes">
             <label for="accountManager">Account Manager Contact:</label>
             <input type="text" id="accountManager" name="accountManager" required>
             <button type="button" onclick="saveLead()">Save Lead</button>
             <button type="button" onclick="newLead()">New Lead</button>
+            <button type="button" onclick="searchLinkedIn()">Search LinkedIn</button>
         </form>
     </div>
 
@@ -98,10 +122,23 @@
     <script>
         let leads = JSON.parse(localStorage.getItem('leads')) || [];
 
+        function toggleEventInput() {
+            const eventSelect = document.getElementById('event');
+            const eventOtherInput = document.getElementById('eventOther');
+            if (eventSelect.value === 'other') {
+                eventOtherInput.style.display = 'block';
+                eventOtherInput.required = true;
+            } else {
+                eventOtherInput.style.display = 'none';
+                eventOtherInput.required = false;
+            }
+        }
+
         function saveLead() {
             const leadForm = document.getElementById('leadForm');
+            const event = leadForm.event.value === 'other' ? leadForm.eventOther.value : leadForm.event.value;
             const leadData = {
-                Event: leadForm.event.value,
+                Event: event,
                 Name: leadForm.name.value,
                 Surname: leadForm.surname.value,
                 Company: leadForm.company.value,
@@ -109,6 +146,8 @@
                 Phone: leadForm.phone.value,
                 Position: leadForm.position.value,
                 Interest: leadForm.interest.value,
+                GroupOfDevices: leadForm.groupOfDevices.value,
+                Notes: leadForm.notes.value,
                 AccountManager: leadForm.accountManager.value
             };
 
@@ -124,6 +163,15 @@
 
         function newLead() {
             document.getElementById('leadForm').reset();
+            document.getElementById('eventOther').style.display = 'none';
+        }
+
+        function searchLinkedIn() {
+            const name = document.getElementById('name').value;
+            const surname = document.getElementById('surname').value;
+            const query = `${name} ${surname}`;
+            const url = `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(query)}`;
+            window.open(url, '_blank');
         }
 
         window.onload = function() {
