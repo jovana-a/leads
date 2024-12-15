@@ -14,6 +14,8 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            padding: 10px; /* Add padding to ensure content is not cut off on small screens */
+            box-sizing: border-box;
         }
         .form-container {
             background-color: rgba(255, 255, 255, 0.8);
@@ -21,9 +23,10 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 90%;
+            width: 100%;
             max-width: 500px;
             position: relative;
+            box-sizing: border-box;
         }
         .form-container img {
             width: 100%;
@@ -47,6 +50,7 @@
             border-radius: 5px;
             background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
             color: darkblue;
+            box-sizing: border-box;
         }
         button {
             padding: 10px 20px;
@@ -55,6 +59,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%; /* Ensure buttons are full width on small screens */
+            box-sizing: border-box;
         }
         button:hover {
             background-color: darkblue;
